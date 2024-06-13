@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1436a2d0-3053-479b-8d8e-7bfbde0184ef",
+  "id": "4f7dc48d-ca0f-44f3-9430-23149588d30d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
@@ -27,6 +27,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {
@@ -54,7 +62,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -79,25 +87,18 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(CURRENT_TIMESTAMP)"
+          "default": "(current_timestamp)"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
         }
       },
-      "indexes": {
-        "vaults_name_unique": {
-          "name": "vaults_name_unique",
-          "columns": [
-            "name"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "vaults_user_id_users_id_fk": {
           "name": "vaults_user_id_users_id_fk",

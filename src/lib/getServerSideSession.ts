@@ -8,7 +8,7 @@ export const getServerSideSession = async (req: NextApiRequest) => {
   const { cookies } = req;
 
   if (!cookies.session) {
-    return false;
+    return null;
   }
 
   const decoded = jwt.verify(cookies.session, process.env.JWT_SECRET!);
@@ -16,7 +16,7 @@ export const getServerSideSession = async (req: NextApiRequest) => {
     typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
 
   if (!decodedId) {
-    return false;
+    return null;
   }
 
   const user = await db.query.users.findFirst({
@@ -24,10 +24,8 @@ export const getServerSideSession = async (req: NextApiRequest) => {
   });
 
   if (!user) {
-    return false;
+    return null;
   }
 
-  const { password, ...userWithoutPassword } = user;
-
-  return userWithoutPassword;
+  return user;
 };

@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
@@ -12,19 +12,31 @@ export const users = sqliteTable("users", {
     .notNull(),
 });
 
+export const usersRelations = relations(users, ({ many }) => ({
+  vaults: many(vaults),
+}));
+
 export const vaults = sqliteTable("vaults", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id),
   name: text("name").notNull(),
   value: text("value"),
   createdAt: text("created_at")
-    .default(sql`(CURRENT_TIMESTAMP)`)
+    .default(sql`(current_timestamp)`)
     .notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).$onUpdate(
-    () => new Date()
-  ),
+  updatedAt: text("updated_at")
+    .default(sql`(current_timestamp)`)
+    .$onUpdate(() => sql`(current_timestamp)`)
+    .notNull(),
 });
+
+export const vaultsRelations = relations(vaults, ({ one }) => ({
+  user: one(users, {
+    fields: [vaults.userId],
+    references: [users.id],
+  }),
+}));

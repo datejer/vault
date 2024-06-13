@@ -20,28 +20,46 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string(),
   value: z.string(),
+  password: z.string(),
 });
 
 export function NewVaultDialog() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       value: "",
+      password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await fetch("/api/vault/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success && data.data.vaultId) {
+      router.push(`/vault/${data.data.vaultId}`);
+      return;
+    }
+
+    toast.error(data.error.message || "An error occurred. Please try again.");
+  };
 
   return (
     <Dialog>
@@ -84,6 +102,24 @@ export function NewVaultDialog() {
                     <FormControl>
                       <Textarea
                         placeholder="My vault for personal secrets"
+                        className="col-span-3"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Account password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
                         className="col-span-3"
                         {...field}
                       />

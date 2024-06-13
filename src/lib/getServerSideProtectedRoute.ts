@@ -26,9 +26,18 @@ export const getServerSideProtectedRoute = async (
 
   const user = await db.query.users.findFirst({
     where: eq(users.id, decodedId),
+    with: {
+      vaults: true,
+    },
   });
 
   if (!user) {
+    // remove session cookie if its invalid
+    context.res.setHeader(
+      "Set-Cookie",
+      "session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    );
+
     return UNAUTHENTICATED_REDIRECT;
   }
 

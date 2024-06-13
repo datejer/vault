@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1718094788273,
-      "tag": "0000_petite_nick_fury",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1718094944150,
-      "tag": "0001_supreme_phil_sheldon",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1718110380128,
-      "tag": "0002_round_cerebro",
+      "when": 1718280322727,
+      "tag": "0000_superb_typhoid_mary",
       "breakpoints": true
     }
   ]
