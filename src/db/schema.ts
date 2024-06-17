@@ -7,6 +7,7 @@ export const users = sqliteTable("users", {
     .$defaultFn(() => crypto.randomUUID()),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
+  // dates are in GMT
   createdAt: text("created_at")
     .default(sql`(CURRENT_TIMESTAMP)`)
     .notNull(),
@@ -25,6 +26,7 @@ export const vaults = sqliteTable("vaults", {
     .references(() => users.id),
   name: text("name").notNull(),
   value: text("value"),
+  // dates are in GMT
   createdAt: text("created_at")
     .default(sql`(current_timestamp)`)
     .notNull(),
@@ -40,3 +42,6 @@ export const vaultsRelations = relations(vaults, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export type User = typeof users.$inferSelect; // return type when queried
+export type Vault = typeof vaults.$inferSelect; // return type when queried

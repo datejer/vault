@@ -76,6 +76,7 @@ const LoginForm: React.FC = () => {
                     <FormControl>
                       <Input
                         id="email"
+                        type="email"
                         placeholder="artur@dudek.sh"
                         {...field}
                       />

@@ -15,19 +15,25 @@ import { getServerSideSession } from "@/lib/getServerSideSession";
 import { encrypt } from "@/lib/crypto";
 
 const InputSchema = z.object({
-  name: z.string(),
-  value: z.string(),
+  id: z.string(),
   password: z.string(),
 });
 
 export default withApiMethods({
   POST: withApiValidation(InputSchema, async (req, res) => {
-    const { name, value, password } = req.body;
+    const { id, password } = req.body;
 
     const user = await getServerSideSession(req);
 
     if (!user) {
       res.status(400).json(buildErrorResponse("Please log in"));
+      return;
+    }
+
+    const vault = await db.select().from(vaults).where(eq(vaults.id, id));
+
+    if (vault.length === 0 || vault[0].userId !== user.id) {
+      res.status(400).json(buildErrorResponse("Invalid vault"));
       return;
     }
 
@@ -38,17 +44,15 @@ export default withApiMethods({
       return;
     }
 
-    const encryptedValue = await encrypt(value, password);
+    const deletedVault = await db
+      .delete(vaults)
+      .where(eq(vaults.id, id))
+      .returning({ id: vaults.id, name: vaults.name });
 
-    const vault = await db
-      .insert(vaults)
-      .values({
-        name,
-        userId: user.id,
-        value: encryptedValue,
+    res.status(200).json(
+      buildResponse(true, {
+        deleted: true,
       })
-      .returning({ id: vaults.id });
-
-    res.status(200).json(buildResponse(true, { vaultId: vault[0].id }));
+    );
   }),
 });

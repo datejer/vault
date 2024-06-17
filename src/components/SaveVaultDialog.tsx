@@ -10,25 +10,32 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LockOpen } from "lucide-react";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Vault } from "@/db/schema";
+import { LockOpen, Save } from "lucide-react";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-export const DecryptVaultDialog = ({
-  vaultId,
-  setVaultValue,
-  setIsDecrypted,
-  isDecrypted,
+export const SaveVaultDialog = ({
+  vault,
+  defaultOpen,
+  setSaveDialogOpen,
+  vaultValue,
   setOriginalDecryptedVaultValue,
 }: {
-  vaultId: string;
-  setVaultValue: Dispatch<SetStateAction<string>>;
-  setIsDecrypted: Dispatch<SetStateAction<boolean>>;
-  isDecrypted: boolean;
+  vault: Vault;
+  defaultOpen: boolean;
+  setSaveDialogOpen: Dispatch<SetStateAction<boolean>>;
+  vaultValue: string;
   setOriginalDecryptedVaultValue: Dispatch<SetStateAction<string>>;
 }) => {
+  const router = useRouter();
   const passwordRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(defaultOpen);
+  }, [defaultOpen]);
 
   const submit = async () => {
     if (!passwordRef.current?.value) {
@@ -36,24 +43,28 @@ export const DecryptVaultDialog = ({
       return;
     }
 
-    const response = await fetch("/api/vault/decrypt", {
+    const response = await fetch("/api/vault/edit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: vaultId,
+        id: vault.id,
+        name: vault.name,
+        value: vaultValue,
         password: passwordRef.current.value,
       }),
     });
 
     const data = await response.json();
 
-    if (response.ok && data.success) {
-      setVaultValue(data.data.value);
-      setOriginalDecryptedVaultValue(data.data.value);
-      setIsOpen(false);
-      setIsDecrypted(true);
+    if (response.ok && data.success && data.data.vaultId) {
+      router.push(`/vault/${data.data.vaultId}`).then(() => {
+        toast.success("Vault saved successfully. Exiting edit mode.");
+        setOriginalDecryptedVaultValue(vaultValue);
+        setSaveDialogOpen(false);
+        setIsOpen(false);
+      });
       return;
     }
 
@@ -62,17 +73,9 @@ export const DecryptVaultDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      {!isDecrypted && (
-        <DialogTrigger asChild>
-          <Button className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
-            <LockOpen className="mr-2 h-4 w-4" />
-            Decrypt Vault
-          </Button>
-        </DialogTrigger>
-      )}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Decrypt vault contents?</DialogTitle>
+          <DialogTitle>Save your changes?</DialogTitle>
         </DialogHeader>
         <Label htmlFor="password">Password</Label>
         <Input
@@ -84,8 +87,8 @@ export const DecryptVaultDialog = ({
         />
         <DialogFooter>
           <Button onClick={submit}>
-            <LockOpen className="mr-2 h-4 w-4" />
-            Decrypt
+            <Save className="mr-2 h-4 w-4" />
+            Save & Encrypt
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -51,8 +51,6 @@ export default withApiMethods({
       path: "/",
     });
 
-    console.log(cookie);
-
     res.setHeader("Set-Cookie", cookie);
     res.status(200).json(buildResponse(true));
   }),

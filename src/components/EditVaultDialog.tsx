@@ -11,24 +11,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LockOpen } from "lucide-react";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-export const DecryptVaultDialog = ({
+export const EditVaultDialog = ({
   vaultId,
   setVaultValue,
   setIsDecrypted,
   isDecrypted,
+  defaultOpen,
   setOriginalDecryptedVaultValue,
 }: {
   vaultId: string;
   setVaultValue: Dispatch<SetStateAction<string>>;
   setIsDecrypted: Dispatch<SetStateAction<boolean>>;
   isDecrypted: boolean;
+  defaultOpen: boolean;
   setOriginalDecryptedVaultValue: Dispatch<SetStateAction<string>>;
 }) => {
+  const router = useRouter();
   const passwordRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(defaultOpen);
+  }, [defaultOpen]);
 
   const submit = async () => {
     if (!passwordRef.current?.value) {
@@ -60,19 +68,18 @@ export const DecryptVaultDialog = ({
     toast.error(data.error.message || "An error occurred. Please try again.");
   };
 
+  const onOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      router.push(`/vault/${vaultId}`);
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      {!isDecrypted && (
-        <DialogTrigger asChild>
-          <Button className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
-            <LockOpen className="mr-2 h-4 w-4" />
-            Decrypt Vault
-          </Button>
-        </DialogTrigger>
-      )}
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Decrypt vault contents?</DialogTitle>
+          <DialogTitle>Decrypt vault and edit contents?</DialogTitle>
         </DialogHeader>
         <Label htmlFor="password">Password</Label>
         <Input
@@ -85,7 +92,7 @@ export const DecryptVaultDialog = ({
         <DialogFooter>
           <Button onClick={submit}>
             <LockOpen className="mr-2 h-4 w-4" />
-            Decrypt
+            Decrypt & Edit
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,5 +1,6 @@
 import { NewVaultDialog } from "@/components/NewVaultDialog";
 import { VaultLayout } from "@/components/VaultLayout";
+import { VaultTableRow } from "@/components/VaultTableRow";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,51 +58,12 @@ export default function VaultPage({
                   <TableHead>Vault ID</TableHead>
                   <TableHead>Created at</TableHead>
                   <TableHead>Last updated</TableHead>
-                  <TableHead></TableHead>
+                  <TableHead className="w-[20px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {user.vaults.map((vault) => (
-                  <TableRow key={vault.id}>
-                    <TableCell className="font-medium">
-                      <Link href={`/vault/${vault.id}`}>{vault.name}</Link>
-                    </TableCell>
-                    <TableCell>
-                      <Link href={`/vault/${vault.id}`}>{vault.id}</Link>
-                    </TableCell>
-                    <TableCell>{vault.createdAt}</TableCell>
-                    <TableCell>{vault.updatedAt}</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div
-                            className="flex items-center justify-center h-5 w-5 cursor-pointer"
-                            role="button"
-                          >
-                            <EllipsisVertical className="h-5 w-5" />
-                            <span className="sr-only">Toggle vault menu</span>
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <Link href={`/vault/${vault.id}`}>
-                            <DropdownMenuItem className="cursor-pointer">
-                              Open
-                            </DropdownMenuItem>
-                          </Link>
-                          <Link href={`/vault/${vault.id}`}>
-                            <DropdownMenuItem className="cursor-pointer">
-                              Edit
-                            </DropdownMenuItem>
-                          </Link>
-                          <Link href={`/vault/${vault.id}`}>
-                            <DropdownMenuItem className="cursor-pointer">
-                              Delete
-                            </DropdownMenuItem>
-                          </Link>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
+                  <VaultTableRow key={vault.id} vault={vault} />
                 ))}
               </TableBody>
             </Table>
