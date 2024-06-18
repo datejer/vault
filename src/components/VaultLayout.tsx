@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUser } from "@/contexts/UserContext";
+import { instanceName } from "@/lib/instanceName";
 import { useLogout } from "@/lib/useLogout";
 import {
   BookLock,
@@ -42,7 +43,7 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
               className="flex items-center gap-2 font-semibold"
             >
               <BookLock className="h-6 w-6" />
-              <span className="">vault.dudek.sh</span>
+              <span className="">{instanceName}</span>
             </Link>
           </div>
           <div className="flex-1">

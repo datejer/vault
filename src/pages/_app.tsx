@@ -6,6 +6,7 @@ import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import Head from "next/head";
 import { UserProvider } from "@/contexts/UserContext";
+import { instanceName } from "@/lib/instanceName";
 
 const fontSans = FontSans({
   weight: "variable",
@@ -26,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
           )}
         >
           <Head>
-            <title>vault.dudek.sh</title>
+            <title>{instanceName}</title>
             <meta
               name="description"
               content="Simple, self-hosted and open-source encrypted data vault."
