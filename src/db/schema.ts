@@ -45,3 +45,5 @@ export const vaultsRelations = relations(vaults, ({ one }) => ({
 
 export type User = typeof users.$inferSelect; // return type when queried
 export type Vault = typeof vaults.$inferSelect; // return type when queried
+
+export type UserWithVaults = User & { vaults: Vault[] };

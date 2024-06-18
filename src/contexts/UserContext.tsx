@@ -1,9 +1,9 @@
-import { User } from "@/db/schema";
+import { User, UserWithVaults } from "@/db/schema";
 import React, { createContext, useContext, useState } from "react";
 
 interface UserContextProps {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  user: UserWithVaults | null;
+  setUser: (user: UserWithVaults | null) => void;
 }
 
 export const UserContext = createContext<UserContextProps>({
@@ -12,14 +12,14 @@ export const UserContext = createContext<UserContextProps>({
 });
 
 type UserProviderProps = {
-  initialUser: User | null;
+  initialUser: UserWithVaults | null;
 };
 
 export const UserProvider = ({
   children,
   initialUser,
 }: React.PropsWithChildren<UserProviderProps>) => {
-  const [user, setUser] = useState<User | null>(initialUser);
+  const [user, setUser] = useState<UserWithVaults | null>(initialUser);
 
   return (
     <UserContext.Provider value={{ user: user || initialUser, setUser }}>
