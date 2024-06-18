@@ -10,9 +10,17 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LockOpen } from "lucide-react";
+import { LockOpen, SquarePen } from "lucide-react";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  use,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { flushSync } from "react-dom";
 import { toast } from "sonner";
 
 export const EditVaultDialog = ({
@@ -32,11 +40,14 @@ export const EditVaultDialog = ({
 }) => {
   const router = useRouter();
   const passwordRef = useRef<HTMLInputElement>(null);
+  const editQuery = router.query.edit === "true";
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setIsOpen(defaultOpen);
-  }, [defaultOpen]);
+    if (editQuery) {
+      setIsOpen(true);
+    }
+  }, [editQuery]);
 
   const submit = async () => {
     if (!passwordRef.current?.value) {
@@ -70,13 +81,23 @@ export const EditVaultDialog = ({
 
   const onOpenChange = (open: boolean) => {
     setIsOpen(open);
-    if (!open) {
-      router.push(`/vault/${vaultId}`);
+    if (open) {
+      router.push(`/vault/${router.query.id}?edit=true`, undefined, {
+        shallow: true,
+      });
+    } else {
+      router.push(`/vault/${router.query.id}`, undefined, { shallow: true });
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <Button className="min-w-32">
+          <SquarePen className="mr-2 h-4 w-4" />
+          Edit
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Decrypt vault and edit contents?</DialogTitle>

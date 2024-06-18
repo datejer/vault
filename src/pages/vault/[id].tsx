@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { EditVaultDialog } from "@/components/EditVaultDialog";
 import { toast } from "sonner";
 import { SaveVaultDialog } from "@/components/SaveVaultDialog";
-import { dbTimeToLocal } from "@/lib/dbTimeToLocal";
+import { dbDateToLocal } from "@/lib/dbDateToLocal";
 import { DeleteVaultDialog } from "@/components/DeleteVaultDialog";
 import { EyeOff, Save, SquarePen, Trash2, X } from "lucide-react";
 
@@ -46,10 +46,6 @@ export default function VaultPage({
       </VaultLayout>
     );
   }
-
-  const handleEditButton = () => {
-    router.push(`/vault/${router.query.id}?edit=true`);
-  };
 
   const handleDiscardButton = () => {
     router.push(`/vault/${router.query.id}`).then(() => {
@@ -87,16 +83,16 @@ export default function VaultPage({
 
   return (
     <VaultLayout>
-      <div className="flex items-center justify-between">
-        <span>
+      <div className="flex items-center justify-between gap-2 flex-col sm:flex-row">
+        <span className="self-start">
           <h1 className="text-lg font-semibold md:text-2xl">
             🔐 Vault: {vault.name}
           </h1>
           <div className="text-muted-foreground" suppressHydrationWarning>
-            {dbTimeToLocal(vault.createdAt)}
+            {dbDateToLocal(vault.createdAt)}
           </div>
         </span>
-        <span className="ml-2 text-muted-foreground">
+        <span className="ml-2 text-muted-foreground self-end sm:self-center">
           {getStatusLabel()} {isDecrypted ? "🔓" : "🔒"}
         </span>
       </div>
@@ -106,23 +102,17 @@ export default function VaultPage({
           value={vaultValue}
           onChange={(e) => setVaultValue(e.target.value)}
           readOnly={!editMode}
-          rows={10}
           placeholder="Vault value"
           className={cn(
-            isDecrypted ? "" : "text-muted-foreground blur-[1px]",
+            isDecrypted
+              ? ""
+              : "text-muted-foreground blur-[1px] pointer-events-none overflow-hidden",
             "h-full",
-            !editMode && "focus-visible:ring-0"
+            !editMode && "focus-visible:ring-0",
+            "max-w-full"
           )}
         />
         <DecryptVaultDialog
-          isDecrypted={isDecrypted}
-          setIsDecrypted={setIsDecrypted}
-          vaultId={vault.id}
-          setVaultValue={setVaultValue}
-          setOriginalDecryptedVaultValue={setOriginalDecryptedVaultValue}
-        />
-        <EditVaultDialog
-          defaultOpen={showEditPrompt}
           isDecrypted={isDecrypted}
           setIsDecrypted={setIsDecrypted}
           vaultId={vault.id}
@@ -143,11 +133,11 @@ export default function VaultPage({
         />
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between  gap-2 flex-col items-start sm:flex-row sm:items-center">
         <div className="text-muted-foreground" suppressHydrationWarning>
-          Last updated: {dbTimeToLocal(vault.updatedAt)}
+          Last updated: {dbDateToLocal(vault.updatedAt)}
         </div>
-        <div className="flex gap-4 ">
+        <div className="flex gap-4 w-full justify-end sm:w-auto flex-wrap">
           {editMode ? (
             <>
               <Button className="min-w-32" onClick={handleSaveButton}>
@@ -175,10 +165,14 @@ export default function VaultPage({
                   Hide contents
                 </Button>
               )}
-              <Button className="min-w-32" onClick={handleEditButton}>
-                <SquarePen className="mr-2 h-4 w-4" />
-                Edit
-              </Button>
+              <EditVaultDialog
+                defaultOpen={showEditPrompt}
+                isDecrypted={isDecrypted}
+                setIsDecrypted={setIsDecrypted}
+                vaultId={vault.id}
+                setVaultValue={setVaultValue}
+                setOriginalDecryptedVaultValue={setOriginalDecryptedVaultValue}
+              />
               <Button
                 className="min-w-32"
                 variant="destructive"

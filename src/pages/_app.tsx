@@ -33,7 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
             />
             <meta
               name="viewport"
-              content="width=device-width, initial-scale=1"
+              content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no"
             />
             <link rel="icon" href="https://fav.farm/🔐" />
           </Head>
