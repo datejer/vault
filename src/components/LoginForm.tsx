@@ -16,9 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { instanceName, instanceUrl } from "@/lib/instanceName";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -37,8 +39,10 @@ const LoginForm: React.FC = () => {
       password: "",
     },
   });
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
     const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -54,6 +58,7 @@ const LoginForm: React.FC = () => {
       return;
     }
 
+    setLoading(false);
     toast.error(data.error.message || "An error occurred. Please try again.");
   };
 
@@ -63,7 +68,11 @@ const LoginForm: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>Login to Vault</CardTitle>
-            <CardDescription></CardDescription>
+            <CardDescription>
+              Instance: <code>{instanceName}</code>
+              <br />
+              Host: <code>{instanceUrl}</code>
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
@@ -108,8 +117,8 @@ const LoginForm: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? (
+            <Button type="submit" disabled={loading}>
+              {loading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : null}{" "}
               Login

@@ -102,7 +102,7 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <BookLock className="h-6 w-6" />
-                  <span className="sr-only">vault.dudek.sh</span>
+                  <span className="sr-only">{instanceName}</span>
                 </Link>
                 <Link
                   href="/vault"
