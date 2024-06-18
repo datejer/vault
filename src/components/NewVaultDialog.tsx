@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
@@ -83,11 +82,7 @@ export function NewVaultDialog() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Personal"
-                        className="col-span-3"
-                        {...field}
-                      />
+                      <Input placeholder="Personal" className="col-span-3" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

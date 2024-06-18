@@ -83,12 +83,7 @@ const RegisterForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="artur@dudek.sh"
-                        {...field}
-                      />
+                      <Input id="email" type="email" placeholder="artur@dudek.sh" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -103,12 +98,7 @@ const RegisterForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="••••••••"
-                        {...field}
-                      />
+                      <Input id="password" type="password" placeholder="••••••••" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -118,10 +108,7 @@ const RegisterForm: React.FC = () => {
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={loading}>
-              {loading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}{" "}
-              Register
+              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null} Register
             </Button>
           </CardFooter>
         </Card>

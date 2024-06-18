@@ -2,11 +2,7 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 import { hash } from "@/lib/bcrypt";
 import { withApiMethods } from "@/lib/withApiMethods";
-import {
-  buildErrorResponse,
-  buildResponse,
-  withApiValidation,
-} from "@/lib/withApiValidation";
+import { buildErrorResponse, buildResponse, withApiValidation } from "@/lib/withApiValidation";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { serialize } from "cookie";
@@ -21,10 +17,7 @@ export default withApiMethods({
   POST: withApiValidation(InputSchema, async (req, res) => {
     const { email, password } = req.body;
 
-    const userExists = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email));
+    const userExists = await db.select().from(users).where(eq(users.email, email));
 
     if (userExists.length !== 0) {
       res.status(400).json(buildErrorResponse("User already exists"));

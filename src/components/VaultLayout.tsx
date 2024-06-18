@@ -1,12 +1,6 @@
 import { VaultSearch } from "@/components/VaultSearch";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,19 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUser } from "@/contexts/UserContext";
 import { instanceName } from "@/lib/instanceName";
 import { useLogout } from "@/lib/useLogout";
-import {
-  BookLock,
-  CircleUser,
-  Menu,
-  Search,
-  Settings,
-  SquareLibrary,
-} from "lucide-react";
+import { BookLock, CircleUser, Menu, Settings, SquareLibrary } from "lucide-react";
 import Link from "next/link";
 
 export function VaultLayout({ children }: { children: React.ReactNode }) {
@@ -39,10 +25,7 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link
-              href="/vault"
-              className="flex items-center gap-2 font-semibold"
-            >
+            <Link href="/vault" className="flex items-center gap-2 font-semibold">
               <BookLock className="h-6 w-6" />
               <span className="">{instanceName}</span>
             </Link>
@@ -70,8 +53,7 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
               <CardHeader className="p-2 pt-0 md:p-4">
                 <CardTitle>Upgrade to Pro</CardTitle>
                 <CardDescription>
-                  Unlock all features and get unlimited access to our support
-                  team.
+                  Unlock all features and get unlimited access to our support team.
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
@@ -87,21 +69,14 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="shrink-0 md:hidden"
-              >
+              <Button variant="outline" size="icon" className="shrink-0 md:hidden">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
-                <Link
-                  href="/vault"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
+                <Link href="/vault" className="flex items-center gap-2 text-lg font-semibold">
                   <BookLock className="h-6 w-6" />
                   <span className="sr-only">{instanceName}</span>
                 </Link>
@@ -125,8 +100,7 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
                   <CardHeader>
                     <CardTitle>Upgrade to Pro</CardTitle>
                     <CardDescription>
-                      Unlock all features and get unlimited access to our
-                      support team.
+                      Unlock all features and get unlimited access to our support team.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -149,26 +123,18 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                {user?.email || "My Account"}
-              </DropdownMenuLabel>
+              <DropdownMenuLabel>{user?.email || "My Account"}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={logout}
-                role="button"
-              >
+              <DropdownMenuItem className="cursor-pointer" onClick={logout} role="button">
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          {children}
-        </main>
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">{children}</main>
       </div>
     </div>
   );

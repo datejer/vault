@@ -7,14 +7,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Vault } from "@/db/schema";
-import { AlertCircle, LockOpen, Save, Trash2 } from "lucide-react";
+import { AlertCircle, Trash2 } from "lucide-react";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { toast } from "sonner";
 
 export const DeleteVaultDialog = ({
@@ -78,15 +77,13 @@ export const DeleteVaultDialog = ({
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>This action cannot be undone. </AlertTitle>
               <AlertDescription>
-                This will permanently delete your vault and remove your
-                encrypted data from our servers.
+                This will permanently delete your vault and remove your encrypted data from our
+                servers.
               </AlertDescription>
             </Alert>
           </DialogDescription>
         </DialogHeader>
-        <Label htmlFor="vault-name-confirm">
-          Enter the vault name to continue:
-        </Label>
+        <Label htmlFor="vault-name-confirm">Enter the vault name to continue:</Label>
         <Input
           id="vault-name-confirm"
           name="vault-name-confirm"

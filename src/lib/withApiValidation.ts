@@ -14,8 +14,8 @@ export const withApiValidation =
           body: z.infer<S>;
         }
       >,
-      res: NextApiResponse
-    ) => unknown
+      res: NextApiResponse,
+    ) => unknown,
   ) =>
   async (req: R, res: NextApiResponse) => {
     const parsedSchema = schema.safeParse(req.body);
@@ -23,9 +23,7 @@ export const withApiValidation =
     if (!parsedSchema.success) {
       const { errors } = parsedSchema.error;
 
-      return res
-        .status(400)
-        .json(buildErrorResponse("Invalid request", errors));
+      return res.status(400).json(buildErrorResponse("Invalid request", errors));
     }
 
     req.body = parsedSchema.data;
@@ -33,12 +31,12 @@ export const withApiValidation =
     return await handler(req, res);
   };
 
-export const buildResponse = (success = true, data?: Object) => ({
+export const buildResponse = (success = true, data?: object) => ({
   success,
   data,
 });
 
-export const buildErrorResponse = (message: string, errors?: any) => ({
+export const buildErrorResponse = (message: string, errors?: object) => ({
   success: false,
   error: { message, errors },
 });

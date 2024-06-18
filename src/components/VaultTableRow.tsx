@@ -1,5 +1,4 @@
 import { DeleteVaultDialog } from "@/components/DeleteVaultDialog";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,29 +31,19 @@ export const VaultTableRow = ({ vault }: { vault: Vault }): JSX.Element => {
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div
-              className="flex items-center justify-center h-5 w-5 cursor-pointer"
-              role="button"
-            >
+            <div className="flex items-center justify-center h-5 w-5 cursor-pointer" role="button">
               <EllipsisVertical className="h-5 w-5" />
               <span className="sr-only">Toggle vault menu</span>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/vault/${vault.id}`}>
-              <DropdownMenuItem className="cursor-pointer">
-                Open
-              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Open</DropdownMenuItem>
             </Link>
             <Link href={`/vault/${vault.id}?edit=true`}>
-              <DropdownMenuItem className="cursor-pointer">
-                Edit
-              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={handleDeleteButton}
-            >
+            <DropdownMenuItem className="cursor-pointer" onClick={handleDeleteButton}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { SaveVaultDialog } from "@/components/SaveVaultDialog";
 import { dbDateToLocal } from "@/lib/dbDateToLocal";
 import { DeleteVaultDialog } from "@/components/DeleteVaultDialog";
-import { EyeOff, Save, SquarePen, Trash2, X } from "lucide-react";
+import { EyeOff, Save, Trash2, X } from "lucide-react";
 
 export default function VaultPage({
   user,
@@ -20,8 +20,9 @@ export default function VaultPage({
   const router = useRouter();
   const vault = user.vaults.find((vault) => vault.id === router.query.id);
   const [vaultValue, setVaultValue] = useState<string>(vault?.value || "");
-  const [originalDecryptedVaultValue, setOriginalDecryptedVaultValue] =
-    useState(vault?.value || "");
+  const [originalDecryptedVaultValue, setOriginalDecryptedVaultValue] = useState(
+    vault?.value || "",
+  );
   const [isDecrypted, setIsDecrypted] = useState(false);
   const editQuery = router.query.edit === "true";
   const showEditPrompt = editQuery && !isDecrypted;
@@ -39,9 +40,7 @@ export default function VaultPage({
     return (
       <VaultLayout>
         <div className="flex items-center">
-          <h1 className="text-lg font-semibold md:text-2xl">
-            ❗ Vault not found
-          </h1>
+          <h1 className="text-lg font-semibold md:text-2xl">❗ Vault not found</h1>
         </div>
       </VaultLayout>
     );
@@ -85,9 +84,7 @@ export default function VaultPage({
     <VaultLayout>
       <div className="flex items-center justify-between gap-2 flex-col sm:flex-row">
         <span className="self-start">
-          <h1 className="text-lg font-semibold md:text-2xl">
-            🔐 Vault: {vault.name}
-          </h1>
+          <h1 className="text-lg font-semibold md:text-2xl">🔐 Vault: {vault.name}</h1>
           <div className="text-muted-foreground" suppressHydrationWarning>
             {dbDateToLocal(vault.createdAt)}
           </div>
@@ -109,7 +106,7 @@ export default function VaultPage({
               : "text-muted-foreground blur-[1px] pointer-events-none overflow-hidden",
             "h-full",
             !editMode && "focus-visible:ring-0",
-            "max-w-full"
+            "max-w-full",
           )}
         />
         <DecryptVaultDialog
@@ -144,11 +141,7 @@ export default function VaultPage({
                 <Save className="mr-2 h-4 w-4" />
                 Save
               </Button>
-              <Button
-                className="min-w-32"
-                variant="outline"
-                onClick={handleDiscardButton}
-              >
+              <Button className="min-w-32" variant="outline" onClick={handleDiscardButton}>
                 <X className="mr-2 h-4 w-4" />
                 Discard
               </Button>
@@ -156,11 +149,7 @@ export default function VaultPage({
           ) : (
             <>
               {isDecrypted && (
-                <Button
-                  className="min-w-32"
-                  variant="outline"
-                  onClick={handleHideContentsButton}
-                >
+                <Button className="min-w-32" variant="outline" onClick={handleHideContentsButton}>
                   <EyeOff className="mr-2 h-4 w-4" />
                   Hide contents
                 </Button>
@@ -173,11 +162,7 @@ export default function VaultPage({
                 setVaultValue={setVaultValue}
                 setOriginalDecryptedVaultValue={setOriginalDecryptedVaultValue}
               />
-              <Button
-                className="min-w-32"
-                variant="destructive"
-                onClick={handleDeleteButton}
-              >
+              <Button className="min-w-32" variant="destructive" onClick={handleDeleteButton}>
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </Button>

@@ -1,18 +1,12 @@
 import { db } from "@/db";
-import { users, vaults } from "@/db/schema";
-import { compare, hash } from "@/lib/bcrypt";
+import { vaults } from "@/db/schema";
+import { compare } from "@/lib/bcrypt";
 import { withApiMethods } from "@/lib/withApiMethods";
-import {
-  buildErrorResponse,
-  buildResponse,
-  withApiValidation,
-} from "@/lib/withApiValidation";
+import { buildErrorResponse, buildResponse, withApiValidation } from "@/lib/withApiValidation";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { serialize } from "cookie";
-import jwt from "jsonwebtoken";
 import { getServerSideSession } from "@/lib/getServerSideSession";
-import { decrypt, encrypt } from "@/lib/crypto";
+import { decrypt } from "@/lib/crypto";
 
 const InputSchema = z.object({
   id: z.string(),

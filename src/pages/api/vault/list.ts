@@ -14,10 +14,7 @@ export default withApiMethods({
       return;
     }
 
-    const userVaults = await db
-      .select()
-      .from(vaults)
-      .where(eq(vaults.userId, user.id));
+    const userVaults = await db.select().from(vaults).where(eq(vaults.userId, user.id));
 
     res.status(200).json(buildResponse(true, { vaults: userVaults }));
   },

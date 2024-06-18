@@ -11,9 +11,7 @@ const UNAUTHENTICATED_REDIRECT = {
   },
 };
 
-export const getServerSideProtectedRoute = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProtectedRoute = async (context: GetServerSidePropsContext) => {
   const { cookies } = context.req;
 
   if (!cookies.session) {
@@ -21,8 +19,7 @@ export const getServerSideProtectedRoute = async (
   }
 
   const decoded = jwt.verify(cookies.session, process.env.JWT_SECRET!);
-  const decodedId =
-    typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
+  const decodedId = typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
 
   const user = await db.query.users.findFirst({
     where: eq(users.id, decodedId),
@@ -33,15 +30,12 @@ export const getServerSideProtectedRoute = async (
 
   if (!user) {
     // remove session cookie if its invalid
-    context.res.setHeader(
-      "Set-Cookie",
-      "session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
-    );
+    context.res.setHeader("Set-Cookie", "session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT");
 
     return UNAUTHENTICATED_REDIRECT;
   }
 
-  const { password, ...userWithoutPassword } = user;
+  const { password: _password, ...userWithoutPassword } = user;
 
   return {
     props: {

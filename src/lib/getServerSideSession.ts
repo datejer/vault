@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext, NextApiRequest } from "next";
+import { NextApiRequest } from "next";
 import jwt from "jsonwebtoken";
 import { db } from "@/db";
 import { users } from "@/db/schema";
@@ -12,8 +12,7 @@ export const getServerSideSession = async (req: NextApiRequest) => {
   }
 
   const decoded = jwt.verify(cookies.session, process.env.JWT_SECRET!);
-  const decodedId =
-    typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
+  const decodedId = typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
 
   if (!decodedId) {
     return null;

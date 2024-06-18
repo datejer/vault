@@ -1,4 +1,4 @@
-import { User, UserWithVaults } from "@/db/schema";
+import { UserWithVaults } from "@/db/schema";
 import React, { createContext, useContext, useState } from "react";
 
 interface UserContextProps {

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -12,30 +11,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LockOpen, SquarePen } from "lucide-react";
 import { useRouter } from "next/router";
-import {
-  Dispatch,
-  SetStateAction,
-  use,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { flushSync } from "react-dom";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export const EditVaultDialog = ({
   vaultId,
   setVaultValue,
   setIsDecrypted,
-  isDecrypted,
-  defaultOpen,
   setOriginalDecryptedVaultValue,
 }: {
   vaultId: string;
   setVaultValue: Dispatch<SetStateAction<string>>;
   setIsDecrypted: Dispatch<SetStateAction<boolean>>;
-  isDecrypted: boolean;
-  defaultOpen: boolean;
   setOriginalDecryptedVaultValue: Dispatch<SetStateAction<string>>;
 }) => {
   const router = useRouter();

@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useRouter } from "next/router";
 import { Card, CardContent } from "@/components/ui/card";
 import { useUser } from "@/contexts/UserContext";
 import Link from "next/link";
@@ -10,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 const LIMIT_RESULTS = 5;
 
 export const VaultSearch = () => {
-  const router = useRouter();
   const [query, setQuery] = useState("");
   const user = useUser();
 
@@ -50,9 +48,7 @@ export const VaultSearch = () => {
                         🔒 {vault.name} &mdash; {vault.createdAt.split(" ")[0]}
                       </div>
                     </Link>
-                    {index < filteredVaults.length - 1 && (
-                      <Separator className="my-2" />
-                    )}
+                    {index < filteredVaults.length - 1 && <Separator className="my-2" />}
                   </>
                 ))}
           </CardContent>

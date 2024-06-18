@@ -20,12 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider initialUser={user}>
       <ThemeProvider attribute="class" defaultTheme="light">
-        <main
-          className={cn(
-            "min-h-dvh bg-background font-sans antialiased",
-            fontSans.variable
-          )}
-        >
+        <main className={cn("min-h-dvh bg-background font-sans antialiased", fontSans.variable)}>
           <Head>
             <title>{instanceName}</title>
             <meta
@@ -38,6 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
             />
             <link rel="icon" href="https://fav.farm/🔐" />
           </Head>
+          {/* eslint-disable-next-line react/no-unknown-property */}
           <style jsx global>{`
             html {
               font-family: ${fontSans.style.fontFamily};
