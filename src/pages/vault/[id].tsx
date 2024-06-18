@@ -25,7 +25,6 @@ export default function VaultPage({
   );
   const [isDecrypted, setIsDecrypted] = useState(false);
   const editQuery = router.query.edit === "true";
-  const showEditPrompt = editQuery && !isDecrypted;
   const editMode = editQuery && isDecrypted;
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -155,8 +154,6 @@ export default function VaultPage({
                 </Button>
               )}
               <EditVaultDialog
-                defaultOpen={showEditPrompt}
-                isDecrypted={isDecrypted}
                 setIsDecrypted={setIsDecrypted}
                 vaultId={vault.id}
                 setVaultValue={setVaultValue}
