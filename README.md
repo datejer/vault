@@ -1,40 +1,132 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vault
+
+Vault is a simple, self-hosted, and open-source encrypted data vault. It allows users to securely store and manage their sensitive data with ease.
+
+## Table of Contents
+
+- [Vault](#vault)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Running the Development Server](#running-the-development-server)
+    - [Building for Production](#building-for-production)
+    - [Database Migrations](#database-migrations)
+    - [Linting and Formatting](#linting-and-formatting)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
+
+## Features
+
+- **Encryption**: All data is encrypted to ensure security.
+- **Self-Hosted**: Run Vault on your own server.
+- **Open Source**: Contributions and collaborations are welcome.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Package Manager**: [pnpm](https://pnpm.io/)
+- **UI**: [shadcn/ui](https://ui.shadcn.dev/) (using [Radix](https://www.radix-ui.com/)), [Tailwind CSS](https://tailwindcss.com/)
+- **Database**: [Turso (libSQL / SQLite)](https://turso.tech/)
+- **Database ORM**: [Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)
+- **Authentication**: Custom-built authentication
+- **Hashing and Encryption**: [bcrypt](https://www.npmjs.com/package/bcrypt), [crypto](https://nodejs.org/api/crypto.html)
+- **Linting**: [ESLint](https://eslint.org/), [Prettier](https://prettier.io/)
+- **Deployment**: [Vercel](https://vercel.com/)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+Ensure you have the following installed on your machine:
+
+- Node.js (v18 or higher)
+- pnpm
+
+### Installation
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/datejer/vault.git
+   cd vault
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   pnpm install
+   ```
+
+3. Configure your environment variables. Create a `.env` file and add the necessary variables (see `.env.example` for reference).
+
+### Running the Development Server
+
+To start the development server, run:
+
+```sh
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+To build the project for production, run:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```sh
+pnpm build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Then, to start the production server, run:
 
-## Learn More
+```sh
+pnpm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Database Migrations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To generate and run database migrations, use the following commands:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```sh
+pnpm db:generate
+pnpm db:migrate
+```
 
-## Deploy on Vercel
+### Linting and Formatting
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To run the linter:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```sh
+pnpm lint
+```
+
+To fix linting issues:
+
+```sh
+pnpm lint:fix
+```
+
+To format the code with Prettier:
+
+```sh
+pnpm prettier
+```
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes. Ensure your code follows the established linting and formatting guidelines. Contributions are subject to the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+## Acknowledgements
+
+- [Next.js](https://nextjs.org/)
+- [shadcn/ui](https://ui.shadcn.dev/)
+- [Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)
+- [Turso (libSQL / SQLite)](https://turso.tech/)

@@ -98,7 +98,7 @@ export default function VaultPage({
           value={vaultValue}
           onChange={(e) => setVaultValue(e.target.value)}
           readOnly={!editMode}
-          placeholder="Vault value"
+          placeholder="This vault is empty..."
           className={cn(
             isDecrypted
               ? ""
