@@ -1,9 +1,9 @@
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { vaults } from "@/db/schema";
 import { getServerSideSession } from "@/lib/getServerSideSession";
 import { withApiMethods } from "@/lib/withApiMethods";
 import { buildErrorResponse, buildResponse } from "@/lib/withApiValidation";
-import { eq } from "drizzle-orm";
 
 export default withApiMethods({
   GET: async (req, res) => {

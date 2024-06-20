@@ -1,6 +1,6 @@
+import { serialize } from "cookie";
 import { withApiMethods } from "@/lib/withApiMethods";
 import { buildResponse } from "@/lib/withApiValidation";
-import { serialize } from "cookie";
 
 export default withApiMethods({
   POST: async (req, res) => {

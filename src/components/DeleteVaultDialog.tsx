@@ -1,3 +1,7 @@
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useRef } from "react";
+import { AlertCircle, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,10 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Vault } from "@/db/schema";
-import { AlertCircle, Trash2 } from "lucide-react";
-import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useRef } from "react";
-import { toast } from "sonner";
 
 export const DeleteVaultDialog = ({
   vault,

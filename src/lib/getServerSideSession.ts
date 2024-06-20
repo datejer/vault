@@ -1,8 +1,8 @@
 import { NextApiRequest } from "next";
+import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
 
 export const getServerSideSession = async (req: NextApiRequest) => {
   const { cookies } = req;

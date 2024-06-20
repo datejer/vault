@@ -1,18 +1,21 @@
-import { VaultLayout } from "@/components/VaultLayout";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { getServerSideProtectedRoute } from "@/lib/getServerSideProtectedRoute";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
-import { DecryptVaultDialog } from "@/components/DecryptVaultDialog";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { EditVaultDialog } from "@/components/EditVaultDialog";
-import { toast } from "sonner";
-import { SaveVaultDialog } from "@/components/SaveVaultDialog";
-import { dbDateToLocal } from "@/lib/dbDateToLocal";
-import { DeleteVaultDialog } from "@/components/DeleteVaultDialog";
 import { EyeOff, Save, Trash2, X } from "lucide-react";
+import { toast } from "sonner";
+import { DecryptVaultDialog } from "@/components/DecryptVaultDialog";
+import { DeleteVaultDialog } from "@/components/DeleteVaultDialog";
+import { EditVaultDialog } from "@/components/EditVaultDialog";
+import { defaultSpreadsheetData } from "@/components/NewVaultDialog";
+import { SaveVaultDialog } from "@/components/SaveVaultDialog";
+import { Spreadsheet } from "@/components/Spreadsheet";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { VaultLayout } from "@/components/VaultLayout";
+import { dbDateToLocal } from "@/lib/dbDateToLocal";
+import { getServerSideProtectedRoute } from "@/lib/getServerSideProtectedRoute";
+import { cn } from "@/lib/utils";
+import { vaultTypeIcons, vaultTypeLabels } from "@/lib/vaultTypes";
 
 export default function VaultPage({
   user,
@@ -84,8 +87,12 @@ export default function VaultPage({
       <div className="flex items-center justify-between gap-2 flex-col sm:flex-row">
         <span className="self-start">
           <h1 className="text-lg font-semibold md:text-2xl">🔐 Vault: {vault.name}</h1>
-          <div className="text-muted-foreground" suppressHydrationWarning>
-            {dbDateToLocal(vault.createdAt)}
+          <div className="text-muted-foreground">
+            <span>
+              {vaultTypeLabels[vault.type]} {vaultTypeIcons[vault.type]}
+            </span>
+            <span className="mx-2">•</span>
+            <span suppressHydrationWarning>{dbDateToLocal(vault.createdAt)}</span>
           </div>
         </span>
         <span className="ml-2 text-muted-foreground self-end sm:self-center">
@@ -94,20 +101,32 @@ export default function VaultPage({
       </div>
 
       <div className="relative flex-1">
-        <Textarea
-          value={vaultValue}
-          onChange={(e) => setVaultValue(e.target.value)}
-          readOnly={!editMode}
-          placeholder="This vault is empty..."
-          className={cn(
-            isDecrypted
-              ? ""
-              : "text-muted-foreground blur-[1px] pointer-events-none overflow-hidden",
-            "h-full",
-            !editMode && "focus-visible:ring-0",
-            "max-w-full",
-          )}
-        />
+        {vault.type === "text" && (
+          <Textarea
+            value={vaultValue}
+            onChange={(e) => setVaultValue(e.target.value)}
+            readOnly={!editMode}
+            placeholder="This vault is empty..."
+            className={cn(
+              isDecrypted
+                ? ""
+                : "text-muted-foreground blur-[1px] pointer-events-none overflow-hidden",
+              "h-full",
+              !editMode && "focus-visible:ring-0",
+              "max-w-full",
+            )}
+          />
+        )}
+        {vault.type === "spreadsheet" && (
+          <div className={cn("overflow-scroll", !isDecrypted && "blur-[1px] pointer-events-none")}>
+            <Spreadsheet
+              isDecrypted={isDecrypted}
+              data={isDecrypted ? JSON.parse(vaultValue) : defaultSpreadsheetData}
+              onChange={(data) => setVaultValue(JSON.stringify(data))}
+              disabled={!editMode}
+            />
+          </div>
+        )}
         <DecryptVaultDialog
           isDecrypted={isDecrypted}
           setIsDecrypted={setIsDecrypted}

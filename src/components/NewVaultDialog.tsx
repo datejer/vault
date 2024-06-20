@@ -1,3 +1,10 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { z } from "zod";
+import { Spreadsheet } from "@/components/Spreadsheet";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,18 +24,27 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+import { vaultType } from "@/lib/vaultTypes";
 
 const formSchema = z.object({
   name: z.string(),
-  value: z.string(),
+  type: vaultType,
+  value: z.object({
+    text: z.string(),
+    kv: z.record(z.string()),
+    spreadsheet: z.array(z.array(z.object({ value: z.string() }).or(z.undefined()))),
+  }),
   password: z.string(),
 });
+
+export type SpreadsheetData = ({ value: string; readOnly?: boolean } | undefined)[][];
+
+export const defaultSpreadsheetData = [
+  [{ value: "" }, { value: "" }, { value: "" }],
+  [{ value: "" }, { value: "" }, { value: "" }],
+];
 
 export function NewVaultDialog() {
   const router = useRouter();
@@ -36,10 +52,19 @@ export function NewVaultDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      value: "",
+      type: "text",
+      value: {
+        text: "",
+        kv: {
+          key: "value",
+        },
+        spreadsheet: defaultSpreadsheetData,
+      },
       password: "",
     },
   });
+
+  const type = useWatch({ control: form.control, name: "type" });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const response = await fetch("/api/vault/new", {
@@ -47,7 +72,12 @@ export function NewVaultDialog() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        name: values.name,
+        type: values.type,
+        value: JSON.stringify(values.value[values.type]),
+        password: values.password,
+      }),
     });
 
     const data = await response.json();
@@ -59,6 +89,12 @@ export function NewVaultDialog() {
 
     toast.error(data.error.message || "An error occurred. Please try again.");
   };
+
+  const [spreadsheetData, setSpreadsheetData] = useState<SpreadsheetData>(defaultSpreadsheetData);
+
+  useEffect(() => {
+    form.setValue("value.spreadsheet", spreadsheetData);
+  }, [form, spreadsheetData]);
 
   return (
     <Dialog>
@@ -80,23 +116,12 @@ export function NewVaultDialog() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Vault name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Personal" className="col-span-3" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="value"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Initial value</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="My vault for personal secrets"
+                      <Input
+                        type="text"
+                        autoComplete="off"
+                        placeholder="Personal"
                         className="col-span-3"
                         {...field}
                       />
@@ -105,6 +130,70 @@ export function NewVaultDialog() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Storage type</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="text" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Text</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="kv" disabled />
+                          </FormControl>
+                          <FormLabel className="font-normal text-muted-foreground">
+                            Key-value pairs
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="spreadsheet" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Spreadsheet</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {type === "text" && (
+                <FormField
+                  control={form.control}
+                  name="value.text"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Initial value</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="My vault for personal secrets"
+                          className="col-span-3"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              {type === "spreadsheet" && (
+                <Spreadsheet
+                  isDecrypted={true}
+                  data={spreadsheetData}
+                  onChange={setSpreadsheetData}
+                />
+              )}
               <FormField
                 control={form.control}
                 name="password"

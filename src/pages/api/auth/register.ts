@@ -1,12 +1,12 @@
+import { serialize } from "cookie";
+import { eq } from "drizzle-orm";
+import jwt from "jsonwebtoken";
+import { z } from "zod";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { hash } from "@/lib/bcrypt";
 import { withApiMethods } from "@/lib/withApiMethods";
 import { buildErrorResponse, buildResponse, withApiValidation } from "@/lib/withApiValidation";
-import { eq } from "drizzle-orm";
-import { z } from "zod";
-import { serialize } from "cookie";
-import jwt from "jsonwebtoken";
 
 const InputSchema = z.object({
   email: z.string().email(),

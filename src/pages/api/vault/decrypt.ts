@@ -1,12 +1,12 @@
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 import { db } from "@/db";
 import { vaults } from "@/db/schema";
 import { compare } from "@/lib/bcrypt";
+import { decrypt } from "@/lib/crypto";
+import { getServerSideSession } from "@/lib/getServerSideSession";
 import { withApiMethods } from "@/lib/withApiMethods";
 import { buildErrorResponse, buildResponse, withApiValidation } from "@/lib/withApiValidation";
-import { eq } from "drizzle-orm";
-import { z } from "zod";
-import { getServerSideSession } from "@/lib/getServerSideSession";
-import { decrypt } from "@/lib/crypto";
 
 const InputSchema = z.object({
   id: z.string(),

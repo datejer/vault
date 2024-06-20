@@ -1,4 +1,5 @@
-import { VaultSearch } from "@/components/VaultSearch";
+import Link from "next/link";
+import { BookLock, CircleUser, Menu, Settings, SquareLibrary } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -10,18 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { VaultSearch } from "@/components/VaultSearch";
 import { useUser } from "@/contexts/UserContext";
 import { instanceName } from "@/lib/instanceName";
 import { useLogout } from "@/lib/useLogout";
-import { BookLock, CircleUser, Menu, Settings, SquareLibrary } from "lucide-react";
-import Link from "next/link";
 
 export function VaultLayout({ children }: { children: React.ReactNode }) {
   const { logout } = useLogout();
   const user = useUser();
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-dvh w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -134,7 +134,9 @@ export function VaultLayout({ children }: { children: React.ReactNode }) {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">{children}</main>
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 max-w-[100vw]">
+          {children}
+        </main>
       </div>
     </div>
   );

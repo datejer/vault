@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { useState } from "react";
+import { EllipsisVertical } from "lucide-react";
 import { DeleteVaultDialog } from "@/components/DeleteVaultDialog";
 import {
   DropdownMenu,
@@ -7,9 +10,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Vault } from "@/db/schema";
-import { EllipsisVertical } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
 
 export const VaultTableRow = ({ vault }: { vault: Vault }): JSX.Element => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

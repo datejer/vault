@@ -1,21 +1,23 @@
+import { z } from "zod";
 import { db } from "@/db";
 import { vaults } from "@/db/schema";
 import { compare } from "@/lib/bcrypt";
+import { encrypt } from "@/lib/crypto";
+import { getServerSideSession } from "@/lib/getServerSideSession";
+import { vaultType } from "@/lib/vaultTypes";
 import { withApiMethods } from "@/lib/withApiMethods";
 import { buildErrorResponse, buildResponse, withApiValidation } from "@/lib/withApiValidation";
-import { z } from "zod";
-import { getServerSideSession } from "@/lib/getServerSideSession";
-import { encrypt } from "@/lib/crypto";
 
 const InputSchema = z.object({
   name: z.string(),
+  type: vaultType,
   value: z.string(),
   password: z.string(),
 });
 
 export default withApiMethods({
   POST: withApiValidation(InputSchema, async (req, res) => {
-    const { name, value, password } = req.body;
+    const { name, type, value, password } = req.body;
 
     const user = await getServerSideSession(req);
 
@@ -37,6 +39,7 @@ export default withApiMethods({
       .insert(vaults)
       .values({
         name,
+        type,
         userId: user.id,
         value: encryptedValue,
       })

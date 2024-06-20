@@ -1,12 +1,12 @@
-import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
-import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import { Inter as FontSans } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
 import Head from "next/head";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/contexts/UserContext";
 import { instanceName } from "@/lib/instanceName";
+import { cn } from "@/lib/utils";
 
 const fontSans = FontSans({
   weight: "variable",

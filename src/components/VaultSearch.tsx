@@ -1,10 +1,10 @@
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { useUser } from "@/contexts/UserContext";
 import Link from "next/link";
+import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useUser } from "@/contexts/UserContext";
 
 const LIMIT_RESULTS = 5;
 

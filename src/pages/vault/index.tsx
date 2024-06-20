@@ -1,9 +1,9 @@
+import { InferGetServerSidePropsType } from "next";
 import { NewVaultDialog } from "@/components/NewVaultDialog";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { VaultLayout } from "@/components/VaultLayout";
 import { VaultTableRow } from "@/components/VaultTableRow";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getServerSideProtectedRoute } from "@/lib/getServerSideProtectedRoute";
-import { InferGetServerSidePropsType } from "next";
 
 export default function VaultPage({
   user,

@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { VaultType } from "@/lib/vaultTypes";
 
 export const users = sqliteTable("users", {
   id: text("id")
@@ -25,6 +26,7 @@ export const vaults = sqliteTable("vaults", {
     .notNull()
     .references(() => users.id),
   name: text("name").notNull(),
+  type: text("type").$type<VaultType>().notNull().default("text"),
   value: text("value"),
   // dates are in GMT
   createdAt: text("created_at")

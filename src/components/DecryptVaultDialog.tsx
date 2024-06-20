@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { LockOpen } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,9 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LockOpen } from "lucide-react";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { toast } from "sonner";
 
 export const DecryptVaultDialog = ({
   vaultId,

@@ -23,7 +23,14 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
   ],
-  plugins: ["prettier", "@typescript-eslint", "react", "react-hooks", "unused-imports"],
+  plugins: [
+    "prettier",
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "unused-imports",
+    "eslint-plugin-import-helpers",
+  ],
   rules: {
     // JavaScript rules
     "prefer-const": "warn",
@@ -69,6 +76,23 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "prettier/prettier": "warn",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        newlinesBetween: "never",
+        groups: [
+          ["/^react/", "/^(next|(next/.*))$/"],
+          "absolute",
+          "module",
+          "/^@.*components.*/",
+          "/^@.*hooks.*/",
+          "/^@.*assets.*/",
+          "/^@/.*/",
+          ["parent", "sibling", "index"],
+        ],
+        alphabetize: { order: "asc", ignoreCase: true },
+      },
+    ],
   },
   settings: {
     react: {
