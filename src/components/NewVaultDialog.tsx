@@ -24,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { vaultType } from "@/lib/vaultTypes";
@@ -42,8 +43,8 @@ const formSchema = z.object({
 export type SpreadsheetData = ({ value: string; readOnly?: boolean } | undefined)[][];
 
 export const defaultSpreadsheetData = [
-  [{ value: "" }, { value: "" }, { value: "" }],
-  [{ value: "" }, { value: "" }, { value: "" }],
+  [{ value: "" }, { value: "" }],
+  [{ value: "" }, { value: "" }],
 ];
 
 export function NewVaultDialog() {
@@ -134,7 +135,7 @@ export function NewVaultDialog() {
                 control={form.control}
                 name="type"
                 render={({ field }) => (
-                  <FormItem className="space-y-3">
+                  <FormItem className="space-y-2">
                     <FormLabel>Storage type</FormLabel>
                     <FormControl>
                       <RadioGroup
@@ -188,11 +189,14 @@ export function NewVaultDialog() {
                 />
               )}
               {type === "spreadsheet" && (
-                <Spreadsheet
-                  isDecrypted={true}
-                  data={spreadsheetData}
-                  onChange={setSpreadsheetData}
-                />
+                <div className="overflow-scroll space-y-2">
+                  <Label>Initial value</Label>
+                  <Spreadsheet
+                    isDecrypted={true}
+                    data={spreadsheetData}
+                    onChange={setSpreadsheetData}
+                  />
+                </div>
               )}
               <FormField
                 control={form.control}

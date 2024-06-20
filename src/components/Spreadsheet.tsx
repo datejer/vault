@@ -27,8 +27,6 @@ export const Spreadsheet = ({
 }: SpreadsheetProps) => {
   const [internalData, setInternalData] = useState(data);
 
-  console.log(data[0][0]?.value || "no value");
-
   useEffect(() => {
     setInternalData(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,20 +114,25 @@ export const Spreadsheet = ({
       />
       {!disabled && (
         <div className="flex flex-row ml-1 gap-1">
-          <Button variant="secondary" className="p-0 h-full w-8" onClick={removeColumn}>
+          <Button
+            variant="secondary"
+            className="p-0 h-full w-8"
+            onClick={removeColumn}
+            type="button"
+          >
             <Minus className="h-6 w-6" />
           </Button>
-          <Button variant="secondary" className="p-0 h-full w-8" onClick={addColumn}>
+          <Button variant="secondary" className="p-0 h-full w-8" onClick={addColumn} type="button">
             <Plus className="h-6 w-6" />
           </Button>
         </div>
       )}
       {!disabled && (
         <div className="flex flex-col mt-1 gap-1">
-          <Button variant="secondary" className="p-0 h-8 w-full" onClick={removeRow}>
+          <Button variant="secondary" className="p-0 h-8 w-full" onClick={removeRow} type="button">
             <Minus className="h-6 w-6" />
           </Button>
-          <Button variant="secondary" className="p-0 h-8 w-full" onClick={addRow}>
+          <Button variant="secondary" className="p-0 h-8 w-full" onClick={addRow} type="button">
             <Plus className="h-6 w-6" />
           </Button>
         </div>
