@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Vault } from "@/db/schema";
+import { vaultTypeIcons, vaultTypeLabels } from "@/lib/vaultTypes";
 
 export const VaultTableRow = ({ vault }: { vault: Vault }): JSX.Element => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -20,6 +21,9 @@ export const VaultTableRow = ({ vault }: { vault: Vault }): JSX.Element => {
 
   return (
     <TableRow key={vault.id}>
+      <TableCell>
+        {vaultTypeIcons[vault.type]} {vaultTypeLabels[vault.type]}
+      </TableCell>
       <TableCell className="font-medium">
         <Link href={`/vault/${vault.id}`}>{vault.name}</Link>
       </TableCell>
