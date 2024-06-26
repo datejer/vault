@@ -31,7 +31,7 @@ export default function VaultPage({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[135px]">Type</TableHead>
+                  <TableHead className="w-[150px]">Type</TableHead>
                   <TableHead>Vault Name</TableHead>
                   <TableHead>Vault ID</TableHead>
                   <TableHead>Created at</TableHead>
