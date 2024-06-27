@@ -29,7 +29,7 @@ Vault is a simple, self-hosted, and open-source encrypted data vault. It allows 
 
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Package Manager**: [pnpm](https://pnpm.io/)
-- **UI**: [shadcn/ui](https://ui.shadcn.dev/) (using [Radix](https://www.radix-ui.com/)), [Tailwind CSS](https://tailwindcss.com/)
+- **UI**: [shadcn/ui](https://ui.shadcn.com/) (using [Radix](https://www.radix-ui.com/)), [Tailwind CSS](https://tailwindcss.com/)
 - **Database**: [Turso (libSQL / SQLite)](https://turso.tech/)
 - **Database ORM**: [Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)
 - **Authentication**: Custom-built authentication
