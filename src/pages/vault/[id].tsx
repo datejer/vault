@@ -11,11 +11,11 @@ import { SaveVaultDialog } from "@/components/SaveVaultDialog";
 import { Spreadsheet } from "@/components/Spreadsheet";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { VaultHeader } from "@/components/VaultHeader";
 import { VaultLayout } from "@/components/VaultLayout";
 import { dbDateToLocal } from "@/lib/dbDateToLocal";
 import { getServerSideProtectedRoute } from "@/lib/getServerSideProtectedRoute";
 import { cn } from "@/lib/utils";
-import { vaultTypeIcons, vaultTypeLabels } from "@/lib/vaultTypes";
 
 export default function VaultPage({
   user,
@@ -70,35 +70,9 @@ export default function VaultPage({
     setDeleteDialogOpen(true);
   };
 
-  const getStatusLabel = () => {
-    if (editMode) {
-      return "Edit mode";
-    }
-
-    if (isDecrypted) {
-      return "Viewing: Decrypted";
-    }
-
-    return "Viewing: Encrypted";
-  };
-
   return (
     <VaultLayout>
-      <div className="flex items-center justify-between gap-2 flex-col sm:flex-row">
-        <span className="self-start">
-          <h1 className="text-lg font-semibold md:text-2xl">🔐 Vault: {vault.name}</h1>
-          <div className="text-muted-foreground">
-            <span>
-              {vaultTypeLabels[vault.type]} {vaultTypeIcons[vault.type]}
-            </span>
-            <span className="mx-2">•</span>
-            <span suppressHydrationWarning>{dbDateToLocal(vault.createdAt)}</span>
-          </div>
-        </span>
-        <span className="ml-2 text-muted-foreground self-end sm:self-center">
-          {getStatusLabel()} {isDecrypted ? "🔓" : "🔒"}
-        </span>
-      </div>
+      <VaultHeader vault={vault} editMode={editMode} isDecrypted={isDecrypted} />
 
       <div className="relative flex-1">
         {vault.type === "text" && (
