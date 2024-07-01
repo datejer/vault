@@ -100,7 +100,9 @@ export const Spreadsheet = ({
           if (disabled) {
             if (
               !ALLOWED_DISABLED_SPREADSHEET_COMBOS.some(
-                (combo) => e.metaKey === combo.metaKey && e.key === combo.key,
+                (combo) =>
+                  (e.metaKey === combo.metaKey || e.ctrlKey === combo.metaKey) &&
+                  e.key === combo.key,
               )
             ) {
               e.preventDefault();
