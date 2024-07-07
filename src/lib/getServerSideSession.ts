@@ -2,20 +2,30 @@ import { NextApiRequest } from "next";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { User, users } from "@/db/schema";
 
-export const getServerSideSession = async (req: NextApiRequest) => {
+export const getServerSideSession = async (
+  req: NextApiRequest,
+): Promise<{ user: User | null; expired?: boolean }> => {
   const { cookies } = req;
 
   if (!cookies.session) {
-    return null;
+    return { user: null };
   }
 
-  const decoded = jwt.verify(cookies.session, process.env.JWT_SECRET!);
-  const decodedId = typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
+  let decodedId;
+  await jwt.verify(cookies.session, process.env.JWT_SECRET!, function (err, decoded) {
+    if (err && err.name === "TokenExpiredError") {
+      return { expired: true };
+    }
+
+    if (decoded) {
+      decodedId = typeof decoded === "string" ? JSON.parse(decoded).id : decoded.id;
+    }
+  });
 
   if (!decodedId) {
-    return null;
+    return { user: null };
   }
 
   const user = await db.query.users.findFirst({
@@ -23,8 +33,8 @@ export const getServerSideSession = async (req: NextApiRequest) => {
   });
 
   if (!user) {
-    return null;
+    return { user: null };
   }
 
-  return user;
+  return { user };
 };

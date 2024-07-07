@@ -19,14 +19,19 @@ export default withApiMethods({
   POST: withApiValidation(InputSchema, async (req, res) => {
     const { name, type, value, password } = req.body;
 
-    const user = await getServerSideSession(req);
+    const session = await getServerSideSession(req);
 
-    if (!user) {
+    if (session.expired) {
+      res.status(400).json(buildErrorResponse("Session expired, please log in again"));
+      return;
+    }
+
+    if (!session.user) {
       res.status(400).json(buildErrorResponse("Please log in"));
       return;
     }
 
-    const passwordCorrect = await compare(password, user.password);
+    const passwordCorrect = await compare(password, session.user.password);
 
     if (!passwordCorrect) {
       res.status(400).json(buildErrorResponse("Invalid password"));
@@ -40,7 +45,7 @@ export default withApiMethods({
       .values({
         name,
         type,
-        userId: user.id,
+        userId: session.user.id,
         value: encryptedValue,
       })
       .returning({ id: vaults.id });
