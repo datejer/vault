@@ -76,7 +76,10 @@ export function NewVaultDialog() {
       body: JSON.stringify({
         name: values.name,
         type: values.type,
-        value: JSON.stringify(values.value[values.type]),
+        value:
+          typeof values.value[values.type] === "string"
+            ? values.value[values.type]
+            : JSON.stringify(values.value[values.type]),
         password: values.password,
       }),
     });
