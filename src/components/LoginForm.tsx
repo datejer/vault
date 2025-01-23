@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -61,6 +61,10 @@ const LoginForm: React.FC = () => {
     setLoading(false);
     toast.error(data.error.message || "An error occurred. Please try again.");
   };
+
+  useEffect(() => {
+    router.prefetch("/vault");
+  }, [router]);
 
   return (
     <Form {...form}>
