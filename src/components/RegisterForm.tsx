@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { instanceName, instanceUrl } from "@/lib/instanceName";
+import { instanceBuild, instanceName, instanceUrl } from "@/lib/instanceName";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -72,6 +72,8 @@ const RegisterForm: React.FC = () => {
               Instance: <code>{instanceName}</code>
               <br />
               Host: <code>{instanceUrl}</code>
+              <br />
+              Build: <code>{instanceBuild}</code>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
